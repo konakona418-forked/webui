@@ -24,7 +24,14 @@ extern "C" {
  * - In other cases, as long as the webui.c file is not included directly, 
  *   you might need to define this macro in your compiler settings
  */
-#define WEBUI_EXTENSIONS_API
+#ifndef WEBUI_EXTENSION_API
+#define WEBUI_EXTENSION_API
+#endif
+
+#ifndef WEBUI_EXPORT
+    #define WEBUI_EXPORT
+    #warning "WEBUI_EXPORT not defined; Please include webui.h before webui_extensions.h"
+#endif
 
 #include <stdbool.h>
 #include <stddef.h>
