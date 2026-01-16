@@ -1,5 +1,5 @@
 /*
-  WebUI Library Extras
+  WebUI Library
   https://webui.me
   https://github.com/webui-dev/webui
   Copyright (c) 2020-2025 Hassan Draga.
@@ -25,12 +25,17 @@ extern "C" {
  *   you might need to define this macro in your compiler settings
  */
 #ifndef WEBUI_EXTENSION_API
-#define WEBUI_EXTENSION_API
+    #define WEBUI_EXTENSION_API
 #endif
 
-#ifndef WEBUI_EXPORT
-    #define WEBUI_EXPORT
-    #warning "WEBUI_EXPORT not defined; Please include webui.h before webui_extensions.h"
+#if defined(_WIN32) && (defined(_MSC_VER) || defined(__TINYC__))
+    #ifndef WEBUI_EXPORT
+        #define WEBUI_EXPORT __declspec(dllexport)
+    #endif
+#else
+    #ifndef WEBUI_EXPORT
+        #define WEBUI_EXPORT extern
+    #endif
 #endif
 
 #include <stdbool.h>
@@ -51,7 +56,7 @@ extern "C" {
  *
  * @example webui_run_fmt(myWindow, "alert('Hello %s');", "World");
  */
-void webui_run_fmt(size_t window, const char* fmt, ...);
+WEBUI_EXPORT void webui_run_fmt(size_t window, const char* fmt, ...);
 
 /**
  * @brief Construct a JavaScript string from a format string,
@@ -75,7 +80,7 @@ void webui_run_fmt(size_t window, const char* fmt, ...);
  * @example bool err = webui_script_fmt(myWindow, 0, myBuffer, myBufferSize,
  *     "return %d + %d;", 4, 6);
  */
-bool webui_script_fmt(size_t window, size_t timeout,
+WEBUI_EXPORT bool webui_script_fmt(size_t window, size_t timeout,
     char* buffer, size_t buffer_length, 
     const char* fmt, ...);
 
